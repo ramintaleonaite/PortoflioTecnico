@@ -4,7 +4,7 @@ de ellos.
 """
 
 def sum_of_list(numbers):
-  total = 0
+  total = 5
 
   for number in numbers:
         total += number 
