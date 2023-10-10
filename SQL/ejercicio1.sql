@@ -89,33 +89,62 @@ INNER JOIN Clientes ON Pedidos.cliente_id = Clientes.id;
 
 13. Consultar los productos de la tabla "Productos" cuyo precio sea mayor a $50.
 
+SELECT * FROM Productos WHERE precio > 50;
 
 14. Consultar los pedidos de la tabla "Pedidos" que tengan una cantidad mayor o
 igual a 5.
+
+SELECT *
+FROM Pedidos
+WHERE cantidad >= 5;
 
 
 15. Consultar los clientes de la tabla "Clientes" cuyo nombre empiece con la letra
 "A".
 
+SELECT * FROM Clientes WHERE nombre LIKE 'A%';
+
 
 16. Realizar una consulta que muestre el nombre del cliente y el total de pedidos
 realizados por cada cliente.
+
+SELECT Clientes.nombre AS Nombre_Cliente, COUNT(Pedidos.id) AS Total_Pedidos
+FROM Clientes
+LEFT JOIN Pedidos ON Clientes.id = Pedidos.cliente_id
+GROUP BY Clientes.id, Clientes.nombre;
 
 
 17. Realizar una consulta que muestre el nombre del producto y la cantidad total de
 pedidos de ese producto.
 
+SELECT Productos.nombre AS Nombre_Producto, SUM(Pedidos.cantidad) AS Cantidad_Total
+FROM Productos
+LEFT JOIN Pedidos ON Productos.id = CAST(Pedidos.producto AS INTEGER)
+GROUP BY Productos.id, Productos.nombre;
 
 18. Agregar una columna llamada "fecha" a la tabla "Pedidos" de tipo fecha.
+
+ALTER TABLE Pedidos
+ADD fecha DATE;
 
 
 19. Agregar una clave externa a la tabla "Pedidos" que haga referencia a la tabla
 "Productos" en la columna "producto".
 
+AALTER TABLE Pedidos
+ALTER COLUMN producto TYPE integer
+USING producto::integer;
+
+ALTER TABLE Pedidos
+ADD CONSTRAINT FK_Producto
+FOREIGN KEY (producto) REFERENCES Productos(id);
 
 20. Realizar una consulta que muestre los nombres de los clientes, los nombres de
 los productos y las cantidades de los pedidos donde coincida la clave externa.
 
-
+SELECT Clientes.nombre AS Nombre_Cliente, Productos.nombre AS Nombre_Producto, Pedidos.cantidad
+FROM Clientes
+INNER JOIN Pedidos ON Clientes.id = Pedidos.cliente_id
+INNER JOIN Productos ON Pedidos.producto = Productos.id;
 
 
